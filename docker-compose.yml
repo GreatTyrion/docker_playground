@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  minio:
+    image: minio/minio:RELEASE.2022-11-11T03-44-20Z
+    command: server --console-address "0.0.0.0:9001" /data/minio
+    volumes:
+      - minio-data:/data/minio
+    ports:
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
+    environment:  # To do: create minio.env to add environment variables https://geek-cookbook.funkypenguin.co.nz/recipes/minio/
+      - MINIO_API_CORS_ALLOW_ORIGIN=*
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://127.0.0.1:9000/minio/health/live"
+        ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+volumes:
+  minio-data:

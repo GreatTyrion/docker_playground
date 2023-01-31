@@ -1,2 +1,7 @@
 # folder
 venv/
+data/
+
+#file
+.env
+.DS_Store
